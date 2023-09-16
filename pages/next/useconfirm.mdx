@@ -1,0 +1,55 @@
+# `useConfirm()` Hook Documentation
+
+> Please note that this page is currently a work in progress as I work to clean up code, and make things smoother!
+
+## Usage
+
+```tsx
+const confirmOptions: ConfirmOptions = {
+	deleteFn: async (id: ID) => {
+		// Use ID to delete your data
+		myDeleteFn(id);
+	},
+	// confirmBtn will run your delete fn
+	// cancelBtn will close
+	render: (props: RenderProps): JSX.Element => {
+		return (
+			<div>
+				My Confirm Alert
+				<div className="flex gap-2">
+					{props.confirmBtn}
+					{props.cancelBtn}
+				</div>
+			</div>
+		);
+	},
+};
+// DeleteConfirm is the component
+// init(id) initializes the question
+// current is the current ID selected for deletion
+const { DeleteConfirm, init, current } = useConfirm(confirmOptions); // { DeleteConfirm, init, cancel, current }
+return <DeleteConfirm />;
+```
+
+## Types
+
+```ts
+type ID = string | number | GridRowId;
+```
+
+```ts
+type RenderProps = {
+	confirmBtn: JSX.Element;
+	cancelBtn: JSX.Element;
+	className?: string;
+};
+```
+
+```ts
+interface ConfirmOptions {
+	deleteFn: (id: ID) => Promise<void>;
+	render: (props: RenderProps) => JSX.Element;
+	cancelBtn?: React.JSXElementConstructor<ButtonProps>;
+	confirmBtn?: React.JSXElementConstructor<ButtonProps>;
+}
+```

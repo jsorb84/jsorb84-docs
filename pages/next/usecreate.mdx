@@ -1,0 +1,60 @@
+# `useCreate()` Hook Documentation
+
+> Please note that this page is currently a work in progress as I work to clean up code, and make things smoother!
+
+## Types
+
+### `CreateOptions<T>`
+
+> The options to configure the useCreate() hook
+>
+> - `createFn()` - Function that takes the new row of type `T` and returns the new row upon creation - MUST BE AN ASYNC FUNCTION
+> - `mutateKey` - For use with SWR , if given will call `mutate(mutateKey)` to refresh stale data.
+> - `formReset()` - For use with React Hook Forms , calls the form reset function upon creation
+> - `timer` - # of MS to "create" the item, just for cosmetics with toasts
+
+```tsx
+/**
+ * @T data: T  The row that is being created of type T
+ * @function createFn The function that accepts the new row and creates (and returns) the new item
+ * mutateKey optional mutate key to refresh cache from SWR
+ * formReset optional hook to clear form
+ * timer the timer for the toast
+ */
+export type CreateOptions<T> = {
+	createFn: (newRow: T) => Promise<T>;
+	mutateKey?: string;
+	formReset?: () => void | Promise<void>;
+	timer?: number;
+	toastOptions?: PromiseToastOptions;
+};
+```
+
+### `PromiseToastOptions`
+
+> Simple type of `@chakra-ui/toast` promise toasts
+> `toast.promise()`
+
+```tsx
+/**
+ * Options for the success, error, and loading states of a Chakra Promise Toast
+ */
+export type PromiseToastOptions = {
+	success: Omit<UseToastOptions, "status">;
+	loading: Omit<UseToastOptions, "status">;
+	error: Omit<UseToastOptions, "status">;
+};
+```
+
+### `CreateResponse<T>`
+
+```tsx
+/**
+ * @component AlertToast the toaster
+ * @function create() will begin the creation
+ */
+export type CreateResponse<T> = {
+	AlertToast: () => JSX.Element;
+	create: (newRow: T) => Promise<T>;
+};
+```
